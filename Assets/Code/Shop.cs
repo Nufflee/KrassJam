@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Code;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -52,12 +51,15 @@ public class Shop : MonoBehaviour
 
     slider.minValue = 1;
     slider.maxValue = itemInfo.quantity;
+    slider.value = 0;
+
+    confirmDialog.transform.Find("ConfirmButton").GetComponent<Button>().onClick.RemoveAllListeners();
 
     confirmDialog.transform.Find("ConfirmButton").GetComponent<Button>().onClick.AddListener(() =>
     {
       confirmDialog.SetActive(false);
 
-      Globals.Inventory.Add(index, (int) slider.value);
+      Globals.Inventory.Add(index, (int) slider.value, itemInfo);
 
       itemInfo.quantity -= (int) slider.value;
     });
@@ -67,7 +69,7 @@ public class Shop : MonoBehaviour
     slider.onValueChanged.AddListener((value) => { text.text = $"Do you want to buy {(int) value} {Globals.Games[index].title}?"; });
   }
 
-// Update is called once per frame
+  // Update is called once per frame
   void Update()
   {
     if (transform.GetChild(0).gameObject.activeSelf)
@@ -83,6 +85,12 @@ public class Shop : MonoBehaviour
     }
     for (int i = 0; i < items.Count; i++)
     {
+      if (items[i].quantity == 0)
+      {
+        Destroy(items[i].gameObject);
+        items.Remove(items[i]);
+      }
+
       items[i].gameObject.transform.Find("InfoText").GetComponent<TextMeshProUGUI>().text = $"{items[i].quantity} pieces @ ${items[i].price}";
     }
   }
