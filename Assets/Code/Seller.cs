@@ -1,20 +1,15 @@
 ﻿using System.Collections.Generic;
-using Newtonsoft.Json;
 using TMPro;
 using UnityEngine;
 
 public class Seller : MonoBehaviour
 {
-  private List<string> gameNames;
+  List<GameObject> gameItems = new List<GameObject>();
 
   // Use this for initialization
   public void Start()
   {
     GameObject sellerItem = Resources.Load<GameObject>("Prefabs/SellerItem");
-
-    TextAsset asset = Resources.Load<TextAsset>("Data/games");
-
-    gameNames = JsonConvert.DeserializeObject<List<string>>(asset.text);
 
     List<int> alreadyChoosen = new List<int>();
 
@@ -33,8 +28,10 @@ public class Seller : MonoBehaviour
       } while (alreadyChoosen.Contains(r));
 
       alreadyChoosen.Add(r);
-      item.transform.Find("TitleText").GetComponent<TextMeshProUGUI>().text = gameNames[r];
+      item.transform.Find("TitleText").GetComponent<TextMeshProUGUI>().text = Globals.GameNames[r];
+      item.transform.Find("InfoText").GetComponent<TextMeshProUGUI>().text = $"100 pieces @ ${Mathf.RoundToInt(Globals.PriceManager.prices[r])}";
       item.transform.SetParent(gameObject.transform, false);
+      gameItems.Add(item);
 
       Canvas.ForceUpdateCanvases();
     }
@@ -49,5 +46,10 @@ public class Seller : MonoBehaviour
   // Update is called once per frame
   public void Update()
   {
+    for (int i = 0; i < gameItems.Count; i++)
+    {
+      gameItems[i].transform.Find("InfoText").GetComponent<TextMeshProUGUI>().text = $"100 pieces @ ${Mathf.RoundToInt(Globals.PriceManager.prices[i])}";
+      print(Globals.PriceManager.prices[i]);
+    }
   }
 }
