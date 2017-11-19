@@ -1,26 +1,98 @@
 [
-    "Player Known's Battlefield",
-    "Duty of Calls: WWIII",
-    "Assasinations: Origin",
-    "Rocket Football",
-    "HeadCup",
-    "Fight with Sticks!",
-    "Spark",
-    "Knightfall",
-    "Cells of Dead",
-    "Justice 2",
-    "Flight Crew",
-    "Cities in Skyline",
-    "Need for Playback: Speed",
-    "Grand Steal Autos V",
-    "Z1H2",
-    "Fallin 4",
-    "Turned",
-    "Innerlands 2",
-    "Farming Valley",
-    "Surgency",
-    "Heroes and The Company 3",
-    "Clean Bomb",
-    "Trucks: America",
-    "Ad Capitalist"
+    {
+        "title": "Player Known's Battlefield",
+        "price": 30
+    },
+    {
+        "title": "Duty of Calls: WWIII",
+        "price": 60
+    },
+    {
+        "title": "Assasinations: Origin",
+        "price": 60
+    },
+    {
+        "title": "Rocket Football",
+        "price": 20
+    },
+    {
+        "title": "HeadCup",
+        "price": 20
+    },
+    {
+        "title": "Fight with Sticks!",
+        "price": 5
+    },
+    {
+        "title": "Spark",
+        "price": 69
+    },
+    {
+        "title": "Knightfall",
+        "price": 99
+    },
+    {
+        "title": "Cells of Dead",
+        "price": 12
+    },
+    {
+        "title": "Justice 2",
+        "price": 50
+    },
+    {
+        "title": "Flight Crew",
+        "price": 15
+    },
+    {
+        "title": "Cities in Skyline",
+        "price": 28
+    },
+    {
+        "title": "Need for Playback: Speed",
+        "price": 60
+    },
+    {
+        "title": "Grand Steal Autos V",
+        "price": 60
+    },
+    {
+        "title": "Z1H2",
+        "price": 20
+    },
+    {
+        "title": "Fallin 4",
+        "price": 30
+    },
+    {
+        "title": "Turned",
+        "price": 10
+    },
+    {
+        "title" "Innerlands 2",
+        "price": 30
+    },
+    {
+        "title": "Farming Valley",
+        "price": 14
+    },
+    {
+        "title": "Surgency",
+        "price": 10
+    },
+    {
+        "title": "Heroes and The Company 3",
+        "price": 20
+    },
+    {
+        "title": "Clean Bomb",
+        "price": 20
+    },
+    {
+        "title": "Trucks: America",
+        "price": 20
+    },
+    {
+        "title": "Ad Capitalist",
+        "price": 10
+    }
 ]
