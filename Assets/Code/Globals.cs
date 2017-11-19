@@ -5,13 +5,17 @@ using UnityEngine;
 public class Globals : MonoBehaviour
 {
   public static PriceManager PriceManager { get; private set; }
-  public static List<string> GameNames { get; private set; }
+  public static List<GameInfo> Games { get; private set; }
   public static ShopManager ShopManager { get; private set; }
+  public static QuantityManager QuantityManager { get; private set; }
+  public static Inventory Inventory { get; private set; }
 
   private void Awake()
   {
     PriceManager = FindObjectOfType<PriceManager>();
-    GameNames = JsonConvert.DeserializeObject<List<string>>(Resources.Load<TextAsset>("Data/games").text);
+    Games = JsonConvert.DeserializeObject<List<GameInfo>>(Resources.Load<TextAsset>("Data/games").text);
     ShopManager = FindObjectOfType<ShopManager>();
+    QuantityManager = FindObjectOfType<QuantityManager>();
+    Inventory = FindObjectOfType<Inventory>();
   }
 }

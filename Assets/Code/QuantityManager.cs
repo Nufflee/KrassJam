@@ -1,15 +1,15 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class PriceManager : MonoBehaviour
+public class QuantityManager : MonoBehaviour
 {
-  public List<int> priceDeltas = new List<int>();
+  public List<int> quantityDeltas = new List<int>();
 
   private void Awake()
   {
     for (int i = 0; i < Globals.Games.Count; i++)
     {
-      priceDeltas.Add(0);
+      quantityDeltas.Add(0);
     }
   }
 
@@ -19,12 +19,12 @@ public class PriceManager : MonoBehaviour
     {
       int r = Mathf.RoundToInt(Random.Range(-0.51f, 0.51f));
 
-      if (r < 0 && priceDeltas[i] <= 0)
+      if (r < 0 && quantityDeltas[i] <= 0)
       {
       }
       else
       {
-        priceDeltas[i] = r;
+        quantityDeltas[i] = r;
       }
     }
   }
