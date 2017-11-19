@@ -27,6 +27,8 @@ public class Seller : MonoBehaviour
         r = Random.Range(0, count);
       } while (alreadyChoosen.Contains(r));
 
+      print(r);
+
       alreadyChoosen.Add(r);
       item.transform.Find("TitleText").GetComponent<TextMeshProUGUI>().text = Globals.GameNames[r];
       item.transform.Find("InfoText").GetComponent<TextMeshProUGUI>().text = $"100 pieces @ ${Mathf.RoundToInt(Globals.PriceManager.prices[r])}";
@@ -49,7 +51,6 @@ public class Seller : MonoBehaviour
     for (int i = 0; i < gameItems.Count; i++)
     {
       gameItems[i].transform.Find("InfoText").GetComponent<TextMeshProUGUI>().text = $"100 pieces @ ${Mathf.RoundToInt(Globals.PriceManager.prices[i])}";
-      print(Globals.PriceManager.prices[i]);
     }
   }
 }
