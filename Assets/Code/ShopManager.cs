@@ -6,8 +6,8 @@ public class ShopManager : MonoBehaviour
 
   public void ChangeShop(Shop newShop)
   {
-    CurrentShop?.gameObject.SetActive(false);
+    CurrentShop?.transform.GetChild(0).gameObject.SetActive(false);
     CurrentShop = newShop;
-    CurrentShop.gameObject.SetActive(true);
+    CurrentShop.transform.GetChild(0).gameObject.SetActive(true);
   }
 }
