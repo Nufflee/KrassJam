@@ -15,6 +15,9 @@ public class PriceManager : MonoBehaviour
 
   private void FixedUpdate()
   {
+    if (Globals.Games == null)
+      new GameObject().AddComponent<Globals>();
+
     for (int i = 0; i < Globals.Games.Count; i++)
     {
       int r = Mathf.RoundToInt(Random.Range(-0.51f, 0.51f));
