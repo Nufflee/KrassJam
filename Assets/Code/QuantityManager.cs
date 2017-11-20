@@ -7,7 +7,7 @@ public class QuantityManager : MonoBehaviour
 
   private void Awake()
   {
-    for (int i = 0; i < Globals.Games.Count; i++)
+    for (int i = 0; i < Globals.Instance.Games.Count; i++)
     {
       quantityDeltas.Add(0);
     }
@@ -15,9 +15,9 @@ public class QuantityManager : MonoBehaviour
 
   private void FixedUpdate()
   {
-    for (int i = 0; i < Globals.Games.Count; i++)
+    for (int i = 0; i < Globals.Instance.Games.Count; i++)
     {
-      int r = Mathf.RoundToInt(Random.Range(-0.51f, 0.51f));
+      int r = Mathf.RoundToInt(Random.Range(-0.51f, 0.75f));
 
       if (r < 0 && quantityDeltas[i] <= 0)
       {

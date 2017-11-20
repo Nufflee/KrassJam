@@ -14,7 +14,7 @@ public class Inventory : MonoBehaviour
 
   private void Awake()
   {
-    for (int i = 0; i < Globals.Games.Count; i++)
+    for (int i = 0; i < Globals.Instance.Games.Count; i++)
     {
       items.Add(null);
       inventory.Add(0);
@@ -25,15 +25,15 @@ public class Inventory : MonoBehaviour
 
   public void Add(int index, int quantity, ItemInfo info)
   {
-    if (inventory[index] == 0)
+    if (inventory[index] == 0 || items[index] == null)
     {
-      if (Globals.Games == null)
+      if (Globals.Instance.Games == null)
         new GameObject().AddComponent<Globals>();
 
       GameObject item = Instantiate(inventoryItem, transform.Find("Scroll View/Viewport/Content"), false);
       item.GetComponent<RectTransform>().sizeDelta = new Vector2(349.1f, 113.0f);
 
-      item.transform.Find("TitleText").GetComponent<TextMeshProUGUI>().text = Globals.Games[index].title;
+      item.transform.Find("TitleText").GetComponent<TextMeshProUGUI>().text = Globals.Instance.Games[index].title;
       ItemInfo itemInfo = new ItemInfo(quantity, item, info.price);
 
       item.transform.Find("InfoText").GetComponent<TextMeshProUGUI>().text = $"{itemInfo.quantity} pieces @ ${itemInfo.price}";
@@ -45,7 +45,7 @@ public class Inventory : MonoBehaviour
     }
     else
     {
-      items[index] = info; //MIGHT BREAK STUFF
+      //items[index] = info; //MIGHT BREAK STUFF
       items[index].quantity = quantity;
 
       if (info.price != items[index].price)
@@ -69,21 +69,27 @@ public class Inventory : MonoBehaviour
     slider.maxValue = itemInfo.quantity;
     slider.value = 0;
 
+    int price;
+
+    price = Globals.Instance.ShopManager.CurrentShop.items[index] == null ? Globals.Instance.Games[index].price : Globals.Instance.ShopManager.CurrentShop.items[index].price;
+
     confirmDialog.transform.Find("ConfirmButton").GetComponent<Button>().onClick.RemoveAllListeners();
 
     confirmDialog.transform.Find("ConfirmButton").GetComponent<Button>().onClick.AddListener(() =>
     {
+      Globals.Instance.MoneyManager.Add((int) slider.value * price);
+
       confirmDialog.SetActive(false);
 
-      Globals.ShopManager.CurrentShop.Add(index, (int) slider.value, items[index]);
+      Globals.Instance.ShopManager.CurrentShop.Add(index, (int) slider.value, items[index]);
 
       items[index].quantity -= (int) slider.value;
       inventory[index] -= (int) slider.value;
     });
 
-    text.text = $"Do you want to sell 1 of {Globals.Games[index].title} @ ${itemInfo.price}?";
+    text.text = $"Do you want to sell 1 of {Globals.Instance.Games[index].title} @ ${price} (${price})?";
 
-    slider.onValueChanged.AddListener((value) => { text.text = $"Do you want to sell {(int) value} of {Globals.Games[index].title} @ ${itemInfo.price}?"; });
+    slider.onValueChanged.AddListener((value) => { text.text = $"Do you want to sell {(int) value} of {Globals.Instance.Games[index].title} @ ${price} (${price * (int) value})?"; });
   }
 
   public void Update()
@@ -96,7 +102,7 @@ public class Inventory : MonoBehaviour
       if (items[i].quantity == 0)
       {
         Destroy(items[i].gameObject);
-        items.Remove(items[i]);
+        items[i] = null;
       }
       else
       {

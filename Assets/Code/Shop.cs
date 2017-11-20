@@ -5,21 +5,21 @@ using UnityEngine.UI;
 
 public class Shop : MonoBehaviour
 {
-  List<ItemInfo> items = new List<ItemInfo>();
+  public List<ItemInfo> items = new List<ItemInfo>();
   public GameObject confirmDialog;
   private GameObject sellerItem;
 
   // Use this for initialization
   private void Start()
   {
-    for (int i = 0; i < Globals.Games.Count; i++)
+    for (int i = 0; i < Globals.Instance.Games.Count; i++)
     {
       items.Add(null);
     }
     sellerItem = Resources.Load<GameObject>("Prefabs/SellerItem");
     List<int> alreadyChoosen = new List<int>();
 
-    int count = 15; //Random.Range(1, gameNames.Count / 2);
+    int count = Random.Range(1, Globals.Instance.Games.Count);
     for (int i = 0;
       i < count;
       i++)
@@ -31,12 +31,13 @@ public class Shop : MonoBehaviour
 
       do
       {
-        r = Random.Range(0, count);
+        r = Globals.Instance.Random.Next(0, Globals.Instance.Games.Count);
+        print(Globals.Instance.Random.NextDouble() * count);
       } while (alreadyChoosen.Contains(r));
 
       alreadyChoosen.Add(r);
-      item.transform.Find("TitleText").GetComponent<TextMeshProUGUI>().text = Globals.Games[r].title;
-      ItemInfo itemInfo = new ItemInfo(Random.Range(10, 200), item, Globals.Games[r].price);
+      item.transform.Find("TitleText").GetComponent<TextMeshProUGUI>().text = Globals.Instance.Games[r].title;
+      ItemInfo itemInfo = new ItemInfo(Random.Range(10, 200), item, Globals.Instance.Games[r].price);
 
       item.transform.Find("InfoText").GetComponent<TextMeshProUGUI>().text = $"{itemInfo.quantity} pieces @ ${itemInfo.price}";
       item.transform.Find("BuyButton").GetComponent<Button>().onClick.AddListener(() => OnClickBuy(r, itemInfo));
@@ -54,11 +55,11 @@ public class Shop : MonoBehaviour
       GameObject item = Instantiate(sellerItem, transform.Find("SellerInventory/Scroll View (1)/Viewport/Content"), false);
       item.GetComponent<RectTransform>().sizeDelta = new Vector2(349.1f, 113.0f);
 
-      if (Globals.Games == null)
+      if (Globals.Instance.Games == null)
         new GameObject().AddComponent<Globals>();
 
-      item.transform.Find("TitleText").GetComponent<TextMeshProUGUI>().text = Globals.Games[index].title;
-      ItemInfo itemInfo = new ItemInfo(info.quantity, item, Globals.Games[index].price);
+      item.transform.Find("TitleText").GetComponent<TextMeshProUGUI>().text = Globals.Instance.Games[index].title;
+      ItemInfo itemInfo = new ItemInfo(info.quantity, item, Globals.Instance.Games[index].price);
 
       item.transform.Find("InfoText").GetComponent<TextMeshProUGUI>().text = $"{itemInfo.quantity} pieces @ ${itemInfo.price}";
       item.transform.Find("BuyButton").GetComponent<Button>().onClick.AddListener(() => OnClickBuy(index, itemInfo));
@@ -84,35 +85,42 @@ public class Shop : MonoBehaviour
     slider.maxValue = itemInfo.quantity;
     slider.value = 0;
 
+    confirmDialog.transform.Find("CancelButton").GetComponent<Button>().onClick.AddListener(() => { confirmDialog.SetActive(false); });
+
     confirmDialog.transform.Find("ConfirmButton").GetComponent<Button>().onClick.RemoveAllListeners();
 
     confirmDialog.transform.Find("ConfirmButton").GetComponent<Button>().onClick.AddListener(() =>
     {
-      items[index] = itemInfo;
+      //items[index] = itemInfo;
 
-      confirmDialog.SetActive(false);
-
-      if (Globals.Inventory == null)
+      if (Globals.Instance.Inventory == null)
         new GameObject().AddComponent<Globals>();
 
-      Globals.Inventory.Add(index, (int) slider.value, itemInfo);
-
-      items[index].quantity -= (int) slider.value;
-
-      if (items[index].quantity == 0)
+      if (!Globals.Instance.MoneyManager.Remove(items[index].price * (int) slider.value))
       {
-        Destroy(items[index].gameObject);
-        items.Remove(items[index]);
-        items[index] = null;
+      }
+      else
+      {
+        confirmDialog.SetActive(false);
+
+        Globals.Instance.Inventory.Add(index, (int) slider.value, itemInfo);
+
+        items[index].quantity -= (int) slider.value;
+
+        if (items[index].quantity == 0)
+        {
+          Destroy(items[index].gameObject);
+          items[index] = null;
+        }
       }
     });
 
-    if (Globals.Games == null)
+    if (Globals.Instance.Games == null)
       new GameObject().AddComponent<Globals>();
 
-    text.text = $"Do you want to buy 1 of {Globals.Games[index].title} @ ${itemInfo.price}?";
+    text.text = $"Do you want to buy 1 of {Globals.Instance.Games[index].title} @ ${itemInfo.price} (${itemInfo.price})?";
 
-    slider.onValueChanged.AddListener((value) => { text.text = $"Do you want to buy {(int) value} of {Globals.Games[index].title} @ ${itemInfo.price}?"; });
+    slider.onValueChanged.AddListener((value) => { text.text = $"Do you want to buy {(int) value} of {Globals.Instance.Games[index].title} @ ${itemInfo.price} (${itemInfo.price * (int) value})?"; });
   }
 
   // Update is called once per frame
@@ -128,11 +136,11 @@ public class Shop : MonoBehaviour
         if (items[i] == null)
           continue;
 
-        if (Globals.QuantityManager == null)
+        if (Globals.Instance.QuantityManager == null)
           new GameObject().AddComponent<Globals>();
 
-        items[i].quantity += Globals.QuantityManager.quantityDeltas[i];
-        items[i].price += Globals.PriceManager.priceDeltas[i];
+        items[i].quantity += Globals.Instance.QuantityManager.quantityDeltas[i];
+        items[i].price += Globals.Instance.PriceManager.priceDeltas[i];
       }
     }
 
@@ -144,7 +152,7 @@ public class Shop : MonoBehaviour
       if (items[i].quantity == 0)
       {
         Destroy(items[i].gameObject);
-        items.Remove(items[i]);
+        items[i] = null;
       }
 
       items[i].gameObject.transform.Find("InfoText").GetComponent<TextMeshProUGUI>().text = $"{items[i].quantity} pieces @ ${items[i].price}";

@@ -94,5 +94,33 @@
     {
         "title": "Ad Capitalist",
         "price": 10
+    },
+    {
+        "title": "Counter Offensive: Global Strike",
+        "price": 14
+    },
+    {
+        "title": "Uncivilization 6",
+        "price": 60
+    },
+    {
+        "title": "Game Trader",
+        "price": 100
+    },
+    {
+        "title": "The Cause 3",
+        "price": 60
+    },
+    {
+        "title": "Bang Geast",
+        "price": 20
+    },
+    {
+        "title": "Totally Not Alive Space",
+        "price": 20
+    },
+    {
+        "title": "Danger Zone in the Clone Drone",
+        "price": 15
     }
 ]

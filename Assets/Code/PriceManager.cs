@@ -7,7 +7,7 @@ public class PriceManager : MonoBehaviour
 
   private void Awake()
   {
-    for (int i = 0; i < Globals.Games.Count; i++)
+    for (int i = 0; i < Globals.Instance.Games.Count; i++)
     {
       priceDeltas.Add(0);
     }
@@ -15,12 +15,12 @@ public class PriceManager : MonoBehaviour
 
   private void FixedUpdate()
   {
-    if (Globals.Games == null)
+    if (Globals.Instance.Games == null)
       new GameObject().AddComponent<Globals>();
 
-    for (int i = 0; i < Globals.Games.Count; i++)
+    for (int i = 0; i < Globals.Instance.Games.Count; i++)
     {
-      int r = Mathf.RoundToInt(Random.Range(-0.51f, 0.51f));
+      int r = Mathf.RoundToInt(Random.Range(-0.51f, 0.75f));
 
       if (r < 0 && priceDeltas[i] <= 0)
       {
